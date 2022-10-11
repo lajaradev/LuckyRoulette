@@ -13,31 +13,33 @@ public class Main {
 		Player player = new Player();
 		Round round = new Round();
 		LuckyRouletteGame game = new LuckyRouletteGame();
-		Sentence sentence = new Sentence();
+		
 	
-		sentence.showFile();
+		//sentence.showFile();
 		
-	//	playerData(player, round);
+		playerData(player, round);
 		
-		//game.startGame();	
+		String LEVEL = round.getLevel();
+		game.startGame(LEVEL);	
 		
 		scanIn.close();	
 	}
 	
-	private static String get(String str) {
+	private static String screen(String str) {
 		
 		System.out.println(str);
 		return(scanIn.nextLine());
 	}
 
-	private static void playerData(Player player, Round round) {
+	private static void playerData(Player player, Round round) { // COLLECT THE VALUE
 		
-		player.setAlias(get("Alias: "));
-		player.setPassword(get("Password: "));
-		player.setName(get("Name: "));
-		player.setDateBirth(get("Date: "));	
+		player.setAlias(screen("Alias: "));
+		player.setPassword(screen("Password: "));
+		player.setName(screen("Name: "));
+		player.setDateBirth(screen("Date: "));	
 		
-		round.setRoundNumber(Integer.parseInt(get("Rounds: ")));
+		round.setRoundNumber(Integer.parseInt(screen("Rounds: ")));
+		round.setLevel(screen("Level: "));
 		
 	}
 		
