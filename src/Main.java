@@ -1,3 +1,5 @@
+import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.Scanner;
 
 public class Main {
@@ -33,15 +35,47 @@ public class Main {
 
 	private static void playerData(Player player, Round round) { // COLLECT THE VALUE
 		
-		player.setAlias(screen("Alias: "));
-		player.setPassword(screen("Password: "));
-		player.setName(screen("Name: "));
-		player.setDateBirth(screen("Date: "));	
+		// ALIAS 
+		do{
+			player.setAlias(screen("Alias: "));
+			if(player.getAlias().compareTo("") == 0) {
+				System.out.println("Not null");
+			}
+		}while(player.getAlias().compareTo("") == 0);
 		
+		// PASSWORD 
+		do{
+			player.setPassword(screen("Password: "));
+			if(player.getPassword().compareTo("") <= 5) {
+				System.out.println("Atleast 6 Characters");
+			}
+		}while(player.getPassword().compareTo("") <= 5);
+		
+		// NAME 
+		player.setName(screen("Name: "));
+		
+		// DATE  BIRTH 
+		LocalDate today = LocalDate.now();
+		do{
+			player.setDateBirth(screen("Date: "));	
+			
+			if(player.getDateBirth().compareTo("") == 0) {
+				System.out.println("Not null");
+			}			
+		}while(player.getDateBirth().compareTo("") == 0); 
+		
+	
+		
+		/* ROUNDS */
 		round.setRoundNumber(Integer.parseInt(screen("Rounds: ")));
+		
+		
+		/* LEVEL */
 		round.setLevel(screen("Level: "));
 		
 	}
+	
+
 		
 	
 
