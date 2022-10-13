@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Scanner;
@@ -5,6 +6,8 @@ import java.util.Scanner;
 public class Main {
 	
 	private static String NAME = "SAMUEL LAJARA";
+	private static String ROUND =  "Rounds: ";
+	private static String LEVEL = "Level: (easy / medium / expert)";
 	
 	private static Scanner scanIn = new Scanner(System.in);
 
@@ -15,13 +18,11 @@ public class Main {
 		Player player = new Player();
 		Round round = new Round();
 		LuckyRouletteGame game = new LuckyRouletteGame();
-		
 	
-		//sentence.showFile();
-		
 		playerData(player, round);
 		
 		String LEVEL = round.getLevel();
+		
 		game.startGame(LEVEL);	
 		
 		scanIn.close();	
@@ -35,7 +36,7 @@ public class Main {
 
 	private static void playerData(Player player, Round round) { // COLLECT THE VALUE
 		
-		// ALIAS 
+/*		// ALIAS 
 		do{
 			player.setAlias(screen("Alias: "));
 			if(player.getAlias().compareTo("") == 0) {
@@ -66,12 +67,12 @@ public class Main {
 		
 	
 		
-		/* ROUNDS */
-		round.setRoundNumber(Integer.parseInt(screen("Rounds: ")));
+		// ROUNDS
+		round.setRoundNumber(Integer.parseInt(screen(ROUND)));	*/
 		
 		
-		/* LEVEL */
-		round.setLevel(screen("Level: "));
+		// LEVEL
+		round.setLevel(screen(LEVEL));
 		
 	}
 	
