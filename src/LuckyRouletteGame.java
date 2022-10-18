@@ -1,61 +1,150 @@
-
 import java.util.Scanner;
 
 public class LuckyRouletteGame {
 	
+	private static final String PLAYINICIATE = "Juego iniciado";
+	private static final String FIN = "FIN";
+	private static final String EXPERT = "expert";
+	private static final String MEDIUM = "medium";
+	private static final String ATTEMPT = "ATTEMPT: ";
+	private static final String ENTERCONSONANT = "Enter a consonant: ";
+	private static final String ENTERVOWEL = "Enter a vowel: ";
+	private static final String NOTIS = "The letter is not in the sentence";
+	private static final String OPTION = "Choose a option: ";
+	private static final String OPTION1 = "1. Throw";
+	private static final String OPTION2 = "2. Buy vowel";
+	private static final String OPTION3 = "3. Solve panel";
+	private static final String OPTION4 = "Invalid Character";
+	private static final String COMPARESENTENCE  = "What's the sentence?";
+	private static final String WINNER  = "Congratulation, you have won";
+	private static final String LOSER  = "Sorry, you lost";
+	
+	
 	Scanner sc = new Scanner(System.in);
+	Scanner scc = new Scanner(System.in);
 	
 	public void startGame(String LEVEL){
 		
-		System.out.println("Juego iniciado");
-		Player player = new Player();
-		Character character = new Character();
+		System.out.println(PLAYINICIATE);
 		
 		
 		String randomSentence = Sentence.giveMeSentence(LEVEL);
-		System.out.println(randomSentence);
-		
-		
 		String emptyRandomSentence = Character.emptySentence(randomSentence);
-		System.out.println(emptyRandomSentence);
 		
-		continuePlaying(LEVEL);
+		continuePlaying(LEVEL, randomSentence, emptyRandomSentence);
 		
-		System.out.print("FIN");
+		System.out.print(FIN);
 		
 	}
 	
-	public void continuePlaying(String LEVEL){
+	public void winnerORloser(String randomSentence) {
+		
+		String validateSentence;
+		
+		System.out.println(COMPARESENTENCE);
+		validateSentence = sc.nextLine();
+	
+		if(randomSentence.equals(validateSentence)) {
+			System.out.println(WINNER);
+		}
+		else{
+			System.out.println(LOSER);
+		}
+		
+	}
+	
+	public void continuePlaying(String LEVEL, String randomSentence, String emptyRandomSentence){
+		
+		String newletterinSentence = emptyRandomSentence;
+		String validatedLetter;
+		String letter;
 		
 		int MAXattempt;
-		if(LEVEL.equals("expert")) {
+		int option;
+		int attempt = 1;
+		
+		if(LEVEL.equals(EXPERT)) {
 			MAXattempt = 5;
 		}
-		else if(LEVEL.equals("medium")) {
+		else if(LEVEL.equals(MEDIUM)) {
 			MAXattempt = 8;
 		}
 		else {
 			MAXattempt = 10;
 		}
 		
-		for(int attempt = 1; attempt < MAXattempt + 1; attempt ++) {
+		System.out.println(randomSentence);
+		System.out.println(emptyRandomSentence);
+		
+		while(attempt < MAXattempt + 1) {
 			
-			System.out.println("ATTEMPT " + attempt);
-			System.out.print("Enter a consonant: ");
-			String letter = sc.nextLine();
-			String validateChar = Character.isConsonant(letter);
-			System.out.println("Consonant: " + validateChar);
+			System.out.println(OPTION);
+			System.out.println(OPTION1);
+			System.out.println(OPTION2);
+			System.out.println(OPTION3);
+			
+			option = scc.nextInt();
+			
+			switch(option) {
+				
+				case 1:
+					
+					do {
+						System.out.println(ATTEMPT + attempt);
+						System.out.print(ENTERCONSONANT);
+						letter = sc.nextLine();
+						validatedLetter = Character.isConsonant(letter);
+						
+					} while(validatedLetter == null);
+									
+					if(randomSentence.contains(letter)) {						
+						newletterinSentence = Character.newletter(letter, randomSentence, emptyRandomSentence, newletterinSentence);
+						System.out.println(newletterinSentence);
+					}
+					else {
+						System.out.println(NOTIS);
+					}
+					
+					attempt ++;
+					break;
+				
+				
+				
+				case 2:
+					
+					do {
+						System.out.print(ENTERVOWEL);
+						letter = sc.nextLine();
+						validatedLetter = Character.isVowel(letter);
+						
+					} while(validatedLetter == null);
+					
+					if(randomSentence.contains(letter)) {						
+						newletterinSentence = Character.newletter(letter, randomSentence, emptyRandomSentence, newletterinSentence);
+						System.out.println(newletterinSentence);
+					}
+					else {
+						System.out.println(NOTIS);
+					}
+					
+					
+					break;
+					
+			
+				case 3:
+					
+					winnerORloser(randomSentence);
+										
+					break;
+				default:
+					System.out.println(OPTION4);
+					break;
+			}
 			
 		}
 		
 	}
-
-	public static String showResultInfo(String randomSentence) {
-		
-		
-		
-		return randomSentence;
-		
-	}
+	
+	
 	
 }
