@@ -1,4 +1,3 @@
-import java.text.Normalizer;
 import java.util.ArrayList;
 
 public class Character {
@@ -81,24 +80,5 @@ public class Character {
 		}
 			
 	}
-	
-	
-	
-	
-	public static String stripAccents(String s) 
-	{
-	    /*Salvamos las ñ*/
-	    s = s.replace('ñ', '\001');
-	    s = s.replace('Ñ', '\002');
-	    s = Normalizer.normalize(s, Normalizer.Form.NFD);
-	    s = s.replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
-	    /*Volvemos las ñ a la cadena*/
-	    s = s.replace('\001', 'ñ');
-	    s = s.replace('\002', 'Ñ');
-
-	    return s;
-	}   
-	
-
-	
+		
 }

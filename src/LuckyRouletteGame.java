@@ -2,38 +2,45 @@ import java.util.Scanner;
 
 public class LuckyRouletteGame {
 	
-	private static final String PLAYINICIATE = "Juego iniciado";
-	private static final String FIN = "FIN";
-	private static final String EXPERT = "expert";
-	private static final String MEDIUM = "medium";
-	private static final String ATTEMPT = "ATTEMPT: ";
-	private static final String ENTERCONSONANT = "Enter a consonant: ";
-	private static final String ENTERVOWEL = "Enter a vowel: ";
-	private static final String NOTIS = "The letter is not in the sentence";
-	private static final String OPTION = "Choose a option: ";
-	private static final String OPTION1 = "1. Throw";
-	private static final String OPTION2 = "2. Buy vowel";
-	private static final String OPTION3 = "3. Solve panel";
-	private static final String OPTION4 = "Invalid Character";
-	private static final String COMPARESENTENCE  = "What's the sentence?";
-	private static final String WINNER  = "Congratulation, you have won";
-	private static final String LOSER  = "Sorry, you lost";
+	private static final String INI1 			= "ROUND";
+	private static final String INI2 			= "STARTED";
+	private static final String END 			= "END";
+	private static final String SPACE         	= " ";
 	
+	private static final String EXPERT 			= "expert";
+	private static final String MEDIUM 			= "medium";
+	private static final String ATTEMPT 		= "ATTEMPT: ";
+	private static final String ENTERCONSONANT 	= "Enter a consonant: ";
+	private static final String ENTERVOWEL 		= "Enter a vowel: ";
+	private static final String NOTIS 			= "The letter is not in the sentence";
+	private static final String OPTION 			= "Choose a option: ";
+	private static final String OPTION1 		= "1. Throw";
+	private static final String OPTION2 		= "2. Buy vowel";
+	private static final String OPTION3 		= "3. Solve panel";
+	private static final String OPTION4 		= "Invalid Character";
+	private static final String COMPARESENTENCE	= "What's the sentence?";
+	private static final String WINNER  		= "Congratulation, you have won";
+	private static final String LOSER  			= "Sorry, you lost";
 	
 	Scanner sc = new Scanner(System.in);
-	Scanner scc = new Scanner(System.in);
+	Scanner SC = new Scanner(System.in);
 	
-	public void startGame(String LEVEL){
+	public void startGame(String LEVEL, int ROUNDS){
 		
-		System.out.println(PLAYINICIATE);
-		
-		
-		String randomSentence = Sentence.giveMeSentence(LEVEL);
-		String emptyRandomSentence = Character.emptySentence(randomSentence);
-		
-		continuePlaying(LEVEL, randomSentence, emptyRandomSentence);
-		
-		System.out.print(FIN);
+		for(int i = 1; i < ROUNDS + 1; i ++) {
+			
+			System.out.println(SPACE);
+			System.out.println(INI1 + SPACE + i + SPACE + INI2);
+			System.out.println(SPACE);
+			
+			
+			String randomSentence = Sentence.giveMeSentence(LEVEL);
+			String emptyRandomSentence = Character.emptySentence(randomSentence);
+			
+			continuePlaying(LEVEL, randomSentence, emptyRandomSentence);
+			
+			System.out.println(END);
+		}
 		
 	}
 	
@@ -46,9 +53,11 @@ public class LuckyRouletteGame {
 	
 		if(randomSentence.equals(validateSentence)) {
 			System.out.println(WINNER);
+			
 		}
 		else{
 			System.out.println(LOSER);
+			
 		}
 		
 	}
@@ -62,6 +71,7 @@ public class LuckyRouletteGame {
 		int MAXattempt;
 		int option;
 		int attempt = 1;
+		int winORlost = 0;
 		
 		if(LEVEL.equals(EXPERT)) {
 			MAXattempt = 5;
@@ -70,7 +80,7 @@ public class LuckyRouletteGame {
 			MAXattempt = 8;
 		}
 		else {
-			MAXattempt = 10;
+			MAXattempt = 3;
 		}
 		
 		System.out.println(randomSentence);
@@ -78,12 +88,13 @@ public class LuckyRouletteGame {
 		
 		while(attempt < MAXattempt + 1) {
 			
+			System.out.println("RESULTADO " + winORlost);
 			System.out.println(OPTION);
 			System.out.println(OPTION1);
 			System.out.println(OPTION2);
 			System.out.println(OPTION3);
 			
-			option = scc.nextInt();
+			option = SC.nextInt();
 			
 			switch(option) {
 				
@@ -127,16 +138,17 @@ public class LuckyRouletteGame {
 						System.out.println(NOTIS);
 					}
 					
-					
 					break;
 					
 			
 				case 3:
 					
 					winnerORloser(randomSentence);
-										
+					winORlost ++;
 					break;
+			
 				default:
+					
 					System.out.println(OPTION4);
 					break;
 			}

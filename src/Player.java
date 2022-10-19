@@ -3,13 +3,11 @@ public class Player {
 	
 		private String alias, password, name, dateBirth;
 
-		/* MOSTRAMOS EL ALIAS */
-		public String getAlias() {
+		public String getAlias() { // SHOW ALIAS
 			return alias;
 		}
-		/* RECOGEMOS EL VALOR DEL ALIAS */
-		public void setAlias(String alias) {
-			
+		
+		public void setAlias(String alias) { // GET THE VALUE OF THE ALIAS
 			this.alias = alias;
 		}
 
@@ -18,7 +16,6 @@ public class Player {
 		}
 
 		public void setPassword(String password) {
-			
 			this.password = password;
 		}
 
