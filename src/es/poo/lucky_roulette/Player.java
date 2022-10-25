@@ -1,7 +1,12 @@
-
+package es.poo.lucky_roulette;
 public class Player {
 	
 		private String alias, password, name, dateBirth;
+		
+		public Player() {
+			this.alias = "invitado";
+			this.password = "invitado";
+		}
 
 		public String getAlias() { // SHOW ALIAS
 			return alias;

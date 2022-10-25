@@ -1,4 +1,4 @@
-
+package es.poo.lucky_roulette;
 public class Round {
 
 		private int roundNumber, score;

@@ -1,3 +1,5 @@
+package es.poo.lucky_roulette;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
@@ -5,10 +7,10 @@ public class Main {
 	private static final String LUCKYROULETTE = "LUCKY ROULETTE BY SAMUEL LAJARA";
 	private static final String SEPARATOR     = "-------------------------------";
 	private static final String SPACE         = "";
-	private static final String OPTION1       = "1. Play as a guest";
-	private static final String OPTION2       = "2. Sign in";
-	private static final String OPTION3       = "3. Log in";
-	private static final String OPTION4       = "4. Exit";
+	private static final String OPTION1       = "1. Sign in";
+	private static final String OPTION2       = "2. Log in";
+	private static final String OPTION3       = "3. Exit";
+	private static final String OPTION4       = "4. test";
 	private static final String DEFAULT       = "Wrong Number";
 	private static final String ALIAS 		  = "Alias: ";
 	private static final String PASSWORD      = "Password: ";
@@ -18,6 +20,7 @@ public class Main {
 	private static final String NOTNULL  	  = "Not Null";
 	private static final String ROUND         = "Rounds: ";
 	private static final String LEVEL         = "Level: (rookie / medium / expert)";
+	private static final String CHECKNUMBER   = "You haven't entered a number. Try again: ";
 	
 	
 	private static Scanner scanIn = new Scanner(System.in);
@@ -29,7 +32,7 @@ public class Main {
 		System.out.println(SEPARATOR);
 		System.out.println(SPACE);
 		
-		Player player = new Player();
+		Player player = new Player(); // CREATE OBJECT
 		Round round = new Round();
 		LuckyRouletteGame game = new LuckyRouletteGame();
 		
@@ -38,51 +41,50 @@ public class Main {
 		boolean b = true;
 		String LEVEL = null;
 		
-		while(b) {
-			
-			System.out.println(OPTION1);
-			System.out.println(OPTION2);
-			System.out.println(OPTION3);	
-			System.out.println(OPTION4);
-			
-			option = SC.nextInt();
-			
-		/*	if(validateNumber(option) != 0 ) {
-				System.out.println("NUMERO CORRECTO");
-			}
-			else {
-				System.out.println("INCORRECTO");
-			}*/
-			
-			switch(option) {
+	
+		do {
+		
+				System.out.println(OPTION1);
+				System.out.println(OPTION2);
+				System.out.println(OPTION3);	
+				System.out.println(OPTION4);
 				
-				case 1: // PLAY AS A GUEST
-					LEVEL = "rookie";
-					ROUNDS = 3;
-					game.startGame(LEVEL, ROUNDS);	
+				try {
+					option = SC.nextInt();
+				}catch(InputMismatchException e) {
+					System.out.println(CHECKNUMBER);
+					SC.nextLine();
+				}
+												
+				switch(option) {
+				
+				case 1: // SIGN IN
+					signInPlayer(player);
 				break;
-				
-				case 2: // SIGN IN
-					playerData(player, round);
+					
+				case 2: // LOG IN
+					logInPlayer(player);
+				break;
+					
+				case 3: // EXIT 
+					System.exit(0);
+				break;
+					
+				case 4: // TEST
+					gameData(round);
 					LEVEL = round.getLevel();
 					ROUNDS = round.getRoundNumber();
 					game.startGame(LEVEL, ROUNDS);	
+					
 				break;
-				
-				case 3: // LOG IN
-					System.out.println("3. Log in");	
-				break;
-				
-				case 4: // EXIT 
-					System.exit(0);
-				break;
-				
+					
 				default:
 					System.out.println(DEFAULT);
 				break;
-			}
-		}	
-		
+				} // SWITCH END	
+			
+		}while(b);
+
 		scanIn.close();	
 	}
 	
@@ -92,29 +94,26 @@ public class Main {
 		return(scanIn.nextLine());
 	}
 
-	private static void playerData(Player player, Round round) { // COLLECT THE VALUE
+	private static void signInPlayer(Player player) { // COLLECT THE VALUE
 	
-		// ALIAS 
-		do{
+		
+		do{ // ALIAS 
 			player.setAlias(screen(ALIAS));
 			if(player.getAlias().compareTo(SPACE) == 0) {
 				System.out.println(NOTNULL);
 			}
 		}while(player.getAlias().compareTo(SPACE) == 0);
 		
-		// PASSWORD 
-		do{
+		do{ // PASSWORD 
 			player.setPassword(screen(PASSWORD));
 			if(player.getPassword().compareTo(SPACE) <= 5) {
 				System.out.println(PASSWORDMIN);
 			}
 		}while(player.getPassword().compareTo(SPACE) <= 5);
 		
-		// NAME 
-		player.setName(screen(NAME));
+		player.setName(screen(NAME)); // NAME 
 		
-		// DATE  BIRTH 
-		do{
+		do{ // DATE  BIRTH 
 			player.setDateBirth(screen(DATE));	
 			
 			if(player.getDateBirth().compareTo(SPACE) == 0) {
@@ -122,22 +121,19 @@ public class Main {
 			}			
 		}while(player.getDateBirth().compareTo(SPACE) == 0); 
 		
-		// ROUNDS
-		round.setRoundNumber(Integer.parseInt(screen(ROUND)));	
+	}
+
+	
+	private static void gameData(Round round) { // COLLECT THE VALUE
 		
-		// LEVEL
-		round.setLevel(screen(LEVEL));
-		
+		round.setRoundNumber(Integer.parseInt(screen(ROUND)));	 // NUMBER ROUNDS
+		round.setLevel(screen(LEVEL)); // LEVEL
 	}
 	
-	public static int validateNumber(int option) {
-		
-		if( option == 1 || option == 2 ||  option == 3 || option == 4 )  {
-			return option;
-		}
-		else {
-			return 0;
-		}
+	private static void logInPlayer(Player player) { 
+				
+		System.out.println("Alias " + player.getAlias());
+		System.out.println("Password " + player.getPassword());
 		
 	}
 		

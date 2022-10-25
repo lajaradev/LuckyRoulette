@@ -1,6 +1,9 @@
+package es.poo.lucky_roulette;
 import java.util.ArrayList;
 
 public class Character {
+	
+	
 	
 	public static String emptySentence (String randomSentence) {
 		
@@ -19,17 +22,15 @@ public class Character {
 	public static ArrayList<Integer> index (String letter, String randomSentence) {
 		
 		// GET INDEXS OF MY LETTER
-		
 		char l = letter.charAt(0);
 		char[] character = randomSentence.toCharArray();
 		ArrayList<Integer> arl = new ArrayList<Integer>();
 		
 		for(int i = 0; i < character.length; i ++) {
-			if(character[i] == l) { // System.out.println("character: /" + l + "/ index "+ i);	
+			if(character[i] == l) { //System.out.println("character: /" + l + "/ index "+ i);	
 				arl.add(i);
 			}
-		}		
-		//System.out.println("Arraylist contains: " + arl.toString()); 
+		} //System.out.println("Arraylist contains: " + arl.toString()); 
 		return arl;
 	}
 	
@@ -80,5 +81,21 @@ public class Character {
 		}
 			
 	}
+	
+	public static int countLetter (String letter, String randomSentence) {
 		
+		// GET INDEXS OF MY LETTER
+		int counter = 0;
+		char l = letter.charAt(0);
+		char[] character = randomSentence.toCharArray();
+		ArrayList<Integer> arl = new ArrayList<Integer>();
+		
+		for(int i = 0; i < character.length; i ++) {
+			if(character[i] == l) { //System.out.println("character: /" + l + "/ index "+ i);	
+				arl.add(i);
+				counter ++;
+			}
+		}
+		return counter;
+	}
 }

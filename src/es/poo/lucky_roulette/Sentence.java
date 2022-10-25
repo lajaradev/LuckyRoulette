@@ -1,3 +1,4 @@
+package es.poo.lucky_roulette;
 public class Sentence {
 	
 	private static final String EXPERT 	   = "expert";
