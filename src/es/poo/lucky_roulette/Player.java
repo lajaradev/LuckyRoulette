@@ -1,11 +1,17 @@
 package es.poo.lucky_roulette;
+import java.util.Calendar;
+
 public class Player {
 	
-		private String alias, password, name, dateBirth;
+		private String alias, password, name;
+		private Calendar dateBirth;
 		
-		public Player() {
-			this.alias = "invitado";
-			this.password = "invitado";
+		
+		public Player(String alias, String password, String name, Calendar dateBirth) {
+			this.alias = alias;
+			this.password = password;
+			this.name = name;
+			this.dateBirth = dateBirth;
 		}
 
 		public String getAlias() { // SHOW ALIAS
@@ -32,11 +38,11 @@ public class Player {
 			this.name = name;
 		}
 
-		public String getDateBirth() {
+		public Calendar getDateBirth() {
 			return dateBirth;
 		}
 
-		public void setDateBirth(String dateBirth) {
+		public void setDateBirth(Calendar dateBirth) {
 			this.dateBirth = dateBirth;
 		}
 

@@ -1,4 +1,5 @@
 package es.poo.lucky_roulette;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class LuckyRouletteGame {
@@ -26,7 +27,7 @@ public class LuckyRouletteGame {
 	private static final String ROUNDSCORE  	= "TOTAL SCORE: ";
 	private static final String INITIALSCORE  	= "Initial Score: ";
 	private static final String LOWSCORE  		= "You don't have enough score (min 30) -> Your score is: ";
-	
+	private static final String CHECKNUMBER   = "You haven't entered a number. Try again: ";
 	
 	Scanner sc = new Scanner(System.in);
 	Scanner SC = new Scanner(System.in);
@@ -61,7 +62,7 @@ public class LuckyRouletteGame {
 		String letter;
 		
 		int MAXattempt;
-		int option;
+		int option = 0;
 		int attempt = 1;
 		int scoreAttempt = 0;
 		int scoreRound = 0;
@@ -88,15 +89,20 @@ public class LuckyRouletteGame {
 			System.out.println(OPTION2);
 			System.out.println(OPTION3);
 			
-			option = SC.nextInt();
+			try {
+				option = SC.nextInt();
+			}catch(InputMismatchException e) {
+				System.out.println(CHECKNUMBER);
+				SC.nextLine();
+			}
 			
 			switch(option) {
 				
 				case 1: // 1. Throw
 					
-					do {
-						score = Thrower.throwScore();
-						
+					score = Thrower.throwScore();
+					
+					do {						
 						System.out.println(ATTEMPT + attempt);
 						System.out.println(SCORE + score);
 						System.out.print(ENTERCONSONANT);
@@ -189,7 +195,5 @@ public void winnerORloser(String randomSentence) {
 		}
 		
 	}
-	
-	
-	
+		
 }
