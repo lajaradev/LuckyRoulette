@@ -1,6 +1,11 @@
 package es.poo.lucky_roulette;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -9,79 +14,76 @@ public class Main {
 	private static final String LUCKYROULETTE = "LUCKY ROULETTE BY SAMUEL LAJARA";
 	private static final String SEPARATOR     = "-------------------------------\n";
 	private static final String SPACE         = "";
-	private static final String OPTION1       = "1. Sign in";
-	private static final String OPTION2       = "2. Log in";
-	private static final String OPTION3       = "3. Exit";
+	private static final String MAINMENU       = "1. Sign in\n2. Log in\n3. Exit";
 	private static final String DEFAULT       = "Wrong Number";
-	private static final String ALIAS 		  = "Alias: ";
-	private static final String PASSWORD      = "Password: ";
+	private static final String ALIAS 		  = "Alias:";
+	private static final String PASSWORD      = "Password:";
 	private static final String PASSWORDMIN   = "Atleast 6 Characters";
-	private static final String NAME 		  = "Name: ";
+	private static final String NAME 		  = "Name:";
 	private static final String NOTNULL  	  = "Not Null";
-	private static final String ROUND         = "Rounds: ";
-	private static final String LEVEL         = "Level: (rookie / medium / expert)";
 	private static final String CHECKNUMBER   = "You haven't entered a number. Try again: ";
-	private static final String INFPLAYER	  = "SHOW INFORMATION PLAYER\n";
-	private static final String ERRODATE	  = "The birthday date cannot be greater than the current date";
+	private static final String STARTGAME	  = "Do you want to start a game?";
+	private static final String AFFIRMA	 	  = "Yes or No";
 	private static final String INCORRECTDATA = "Incorrect Data";
 	private static final String YEAR	 	  = "YEAR: (yyyy)";
 	private static final String MONTH	      = "MONTH: (mm)";
 	private static final String DAY			  = "DAY: (d)";
 	private static final String DATEBIRTH	  = "DateBith: ";
 	private static final String TENYEAROLD	  = "you are under 10 years old: ";
+	private static final String YES	 	  		= "yes";
 	
 	private static Scanner scanIn = new Scanner(System.in);
-	private static Scanner SC = new Scanner(System.in);
 	
 	public static void main(String[] args) {
 		
+		Player player = new Player();
+		player.setGuest(player);
+		
+		ArrayList <Player> listPlayer = DataBase.giveMeListPlayer();
+				
 		System.out.println(LUCKYROULETTE);
 		System.out.println(SEPARATOR);
-		
-		Player player = new Player(null, null, null, null); // CREATE OBJECT
-		Round round = new Round();
-		LuckyRouletteGame game = new LuckyRouletteGame();
-		
-		ArrayList <Player> listPlayer = new ArrayList <Player>();
-		listPlayer.add(new Player("guest", "guest", null, null));
-		
+				
 		int option = 0;
-		int ROUNDS = 0;
+		int rounds = 0;
 		int correct;
 		boolean b = true;
-		String LEVEL = null;
+		String LEVEL = null; 
+		String affirmation;
 	
 		do {
-		
-				System.out.println(OPTION1);
-				System.out.println(OPTION2);
-				System.out.println(OPTION3);	
+				System.out.println(MAINMENU);
 				
 				try {
-					option = SC.nextInt();
+					option = Integer.parseInt(scanIn.nextLine());
 				}catch(InputMismatchException e) {
 					System.out.println(CHECKNUMBER);
-					SC.nextLine();
+					scanIn.nextLine();
 				}
 												
 				switch(option) {
 				
 				case 1: // SIGN IN
-					signInPlayer(player, listPlayer);
+					signInPlayer();
 				break;
 					
 				case 2: // LOG IN
-					correct = logInPlayer(player, listPlayer);	
-					if(correct == 0) {
-						gameData(round);
-						LEVEL = round.getLevel();
-						ROUNDS = round.getRoundNumber();
-						game.startGame(LEVEL, ROUNDS);
+					if(logInPlayer() != null) {
+						System.out.println(STARTGAME);
+						affirmation  = screen(AFFIRMA);
+						if(affirmation.compareTo(YES) == 0) {
+							LuckyRouletteGame game = new LuckyRouletteGame();
+							game.startGame();						
+						}
 					}
 				break;
 					
 				case 3: // EXIT 
 					System.exit(0);
+				break;
+				
+				case 4: // EXIT 
+					DataBase.showPlayer(listPlayer);
 				break;
 					
 				default:
@@ -100,98 +102,70 @@ public class Main {
 		return(scanIn.nextLine());
 	}
 
-	private static void signInPlayer(Player player, ArrayList <Player> listPlayer) { // COLLECT THE VALUE
+	private static void signInPlayer() { // COLLECT THE VALUE
 	
+		String strAlias, strPassword, strName;
+		Calendar current, birth;
+		long currentDate, birthDate;
 		
 		do{ // ALIAS 
-			player.setAlias(screen(ALIAS));
-			if(player.getAlias().compareTo(SPACE) == 0) {
+			strAlias = screen(ALIAS);
+			if(strAlias.compareTo(SPACE) == 0) {
 				System.out.println(NOTNULL);
 			}
-		}while(player.getAlias().compareTo(SPACE) == 0);
+		}while(strAlias.compareTo(SPACE) == 0);
 				
 		do{ // PASSWORD 
-			player.setPassword(screen(PASSWORD));
-			if(player.getPassword().compareTo(SPACE) <= 5) {
+			strPassword = screen(PASSWORD);
+			if(strPassword.compareTo(SPACE) <= 5) {
 				System.out.println(PASSWORDMIN);
 			}
-		}while(player.getPassword().compareTo(SPACE) <= 5);
+		}while(strPassword.compareTo(SPACE) <= 5);
 		
-		player.setName(screen(NAME)); // NAME 
-		
+		strName =(screen(NAME)); // NAME 
 		
 		// DATE  BIRTH 	
-		long currentdate, birthdate;
-		do {
-			Calendar current = currentDate();
-			player.setDateBirth(birthDate());
+		/*do {
+			current = currentDate();
+			birth = birthDate();
 			
-			currentdate = current.getTimeInMillis();
-			birthdate = player.getDateBirth().getTimeInMillis();
+			currentDate = current.getTimeInMillis();
+			birthDate = birth.getTimeInMillis();
 			
-			if(currentdate < birthdate) {
+			if(currentDate < birthDate) {
 				System.out.println(ERRODATE);
 			}
 			
-		}while(birthdate > currentdate);
-	
-		listPlayer.add(new Player(player.getAlias(), player.getPassword(), player.getName(), player.getDateBirth()));
-		
-	}
-
-	private static void gameData(Round round) { // COLLECT THE VALUE
-		
-		round.setRoundNumber(Integer.parseInt(screen(ROUND)));	 // NUMBER ROUNDS
-		round.setLevel(screen(LEVEL)); // LEVEL
+		}while(birthDate > currentDate);*/
+			
+		Player player = new Player();
+		player.setAlias(strAlias);
+		player.setPassword(strPassword);
+		player.setName(strName);
+		DataBase.addPlayer(player);
+		 
 	}
 	
-	private static void showPlayer(Player player, ArrayList <Player> listPlayer) {
+	private static Player logInPlayer() { 
 		
-		System.out.println(INFPLAYER);
-		for(Player p: listPlayer) {
-			System.out.println(ALIAS 	 + p.getAlias());
-			System.out.println(PASSWORD  + p.getPassword());
-			System.out.println(NAME 	 + p.getName());
-			System.out.println(SEPARATOR);
+		String strAlias, strPassword;
+		
+		strAlias = screen(ALIAS);
+		strPassword = screen(PASSWORD);
+	
+		if(DataBase.playerExists(strAlias, strPassword) != null) {
+			return DataBase.playerExists(strAlias, strPassword);
 		}
-	}
-	
-	private static int logInPlayer(Player player, ArrayList <Player> listPlayer) { 
-		
-		//showPlayer(player, listPlayer);
-		String alias, password;
-		
-		System.out.println(ALIAS);
-		alias = scanIn.nextLine();
-		System.out.println(PASSWORD);
-		password = scanIn.nextLine();
-		
-		long currentdate10 = checkAge(player, listPlayer); 
-		
-		for(Player p: listPlayer) {
-			if(alias.equals(p.getAlias()) && password.equals(p.getPassword())) {
-				if(currentdate10 < p.getDateBirth().getTimeInMillis()) {
-					return 0;
-				}
-				else {
-					System.out.println(TENYEAROLD);
-				}
-			}
-			else {
-				System.out.println(INCORRECTDATA);
-			}
-		}
-		
-		return 1;		
+		return null;
 	}
 	
 	public static long checkAge(Player player, ArrayList <Player> listPlayer) {
 		
 		Calendar current = currentDate();
-		
+		DateFormat formateador= new SimpleDateFormat("dd/M/yyyyy");
 		current.add(Calendar.YEAR, -10);
 		long currentdate10 = current.getTimeInMillis();
-		
+		System.out.println(formateador.format(current.getTime()));
 		return currentdate10;
 		
 	}
@@ -227,13 +201,13 @@ public class Main {
 			}
 			catch(NumberFormatException e) {  
 				System.out.println(CHECKNUMBER);
-				SC.nextLine();
+				scanIn.nextLine();
 			}
 		} while(day == 0);
 
 		return calendar;
 		
 	}
-	
-	
 }
+	
+	

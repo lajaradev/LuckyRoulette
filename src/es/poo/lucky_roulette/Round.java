@@ -1,9 +1,31 @@
 package es.poo.lucky_roulette;
+
 public class Round {
+	
+		private static final String EXPERT 			= "expert";
+		private static final String MEDIUM 			= "medium";
 
 		private int roundNumber, score;
-		private String level;
-
+		private String level;	
+		
+		public int numberAttemps() {
+			
+			String strlevel = getLevel();
+			int MAXattempt;
+			
+			if(level.equals(EXPERT)) {
+				MAXattempt = 5;
+			}
+			else if(level.equals(MEDIUM)) {
+				MAXattempt = 8;
+			}
+			else {
+				MAXattempt = 10;
+			}
+			
+			return MAXattempt;
+		}
+		
 		public int getRoundNumber() {
 			return roundNumber;
 		}

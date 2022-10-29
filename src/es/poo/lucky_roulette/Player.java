@@ -4,16 +4,14 @@ import java.util.Calendar;
 public class Player {
 	
 		private String alias, password, name;
-		private Calendar dateBirth;
-		
-		
-		public Player(String alias, String password, String name, Calendar dateBirth) {
-			this.alias = alias;
-			this.password = password;
-			this.name = name;
-			this.dateBirth = dateBirth;
+		private Calendar birthDate;
+				
+		public void setGuest(Player player) { // GET THE VALUE OF THE ALIAS
+			player.setAlias("guest");
+			player.setPassword("guest");
+			DataBase.addPlayer(player);
 		}
-
+				
 		public String getAlias() { // SHOW ALIAS
 			return alias;
 		}
@@ -38,12 +36,12 @@ public class Player {
 			this.name = name;
 		}
 
-		public Calendar getDateBirth() {
-			return dateBirth;
+		public Calendar getBirthDate() {
+			return birthDate;
 		}
 
-		public void setDateBirth(Calendar dateBirth) {
-			this.dateBirth = dateBirth;
+		public void setBirthDate(Calendar birthDate) {
+			this.birthDate = birthDate;
 		}
 
 
