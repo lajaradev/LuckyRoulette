@@ -145,7 +145,9 @@ public class LuckyRouletteGame {
 					buyVowel = screen(AFFIRMA);
 					if(buyVowel.compareTo(YES) == 0) {
 						winnerORloser(randomSentence);
-						break; //TODO INIT NEW ROUND
+						break; // exit if
+						//return; //exit for
+						//TODO INIT NEW ROUND (exit while)
 					}		
 				}
 			

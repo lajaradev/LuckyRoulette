@@ -3,14 +3,7 @@ import java.util.Calendar;
 
 public class Player {
 	
-		private String alias, password, name;
-		private Calendar birthDate;
-				
-		public void setGuest(Player player) { // GET THE VALUE OF THE ALIAS
-			player.setAlias("guest");
-			player.setPassword("guest");
-			DataBase.addPlayer(player);
-		}
+		private String alias, password, name, birthDate;
 				
 		public String getAlias() { // SHOW ALIAS
 			return alias;
@@ -36,14 +29,14 @@ public class Player {
 			this.name = name;
 		}
 
-		public Calendar getBirthDate() {
+		public String getBirthDate() {
 			return birthDate;
 		}
 
-		public void setBirthDate(Calendar birthDate) {
+		public void setBirthDate(String birthDate) {
 			this.birthDate = birthDate;
 		}
 
-
+		
 	
 }

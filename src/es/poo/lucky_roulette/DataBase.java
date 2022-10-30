@@ -8,11 +8,19 @@ public class DataBase {
 	private static final String ALIAS 		  = "Alias: ";
 	private static final String PASSWORD      = "Password: ";
 	private static final String NAME 		  = "Name: ";
+	private static final String BIRTH 		  = "Birth Date: ";
 	private static final String SEPARATOR     = "-------------------------------\n";
 	private static final String ALIASEXISTS   = "This alias already exists";
 	private static final String PLAYEREXISTS  = "There is no player with this combination\n";
 		
 	private static ArrayList <Player> listPlayer = new ArrayList <Player>();
+	
+	public static void setGuest() { // GET THE VALUE OF THE ALIAS
+		Player guest = new Player();
+		guest.setAlias("guest");
+		guest.setPassword("guest");
+		listPlayer.add(guest);
+	}
 	
 	// ADD PLAYER
 	public static void addPlayer(Player player) {
@@ -54,6 +62,7 @@ public class DataBase {
 	
 	// GIVE ME LIST PLAYERS
 	public static ArrayList <Player> giveMeListPlayer(){
+		setGuest();
 		return listPlayer;
 	}
 	
@@ -65,6 +74,7 @@ public class DataBase {
 			System.out.println(ALIAS 	 + p.getAlias());
 			System.out.println(PASSWORD  + p.getPassword());
 			System.out.println(NAME 	 + p.getName());
+			System.out.println(BIRTH 	 + p.getBirthDate());
 			System.out.println(SEPARATOR);
 		}
 	}
