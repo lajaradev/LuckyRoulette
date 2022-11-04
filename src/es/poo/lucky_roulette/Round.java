@@ -8,15 +8,16 @@ public class Round {
 		private int roundNumber, score;
 		private String level;	
 		
+		/* This method returns a number of attempts according to the level of difficulty */
 		public int numberAttemps() {
 			
 			String strlevel = getLevel();
 			int MAXattempt;
 			
-			if(level.equals(EXPERT)) {
+			if(strlevel.equals(EXPERT)) {
 				MAXattempt = 5;
 			}
-			else if(level.equals(MEDIUM)) {
+			else if(strlevel.equals(MEDIUM)) {
 				MAXattempt = 8;
 			}
 			else {

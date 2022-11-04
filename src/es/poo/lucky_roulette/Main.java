@@ -1,11 +1,9 @@
 package es.poo.lucky_roulette;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -20,20 +18,15 @@ public class Main {
 	private static final String PASSWORD      = "Password:";
 	private static final String PASSWORDMIN   = "Atleast 6 Characters";
 	private static final String NAME 		  = "Name:";
-	private static final String BIRTHDATE 	  = "Birthdate: (yyyy/mm/dd)";
-	private static final String BIRTHDATEMIN  = "Atleast 10 Characters";
 	private static final String NOTNULL  	  = "Not Null";
 	private static final String CHECKNUMBER   = "You haven't entered a number. Try again: ";
 	private static final String STARTGAME	  = "Do you want to start a game?";
-	private static final String AFFIRMA	 	  = "Yes or No";
-	private static final String INCORRECTDATA = "Incorrect Data";
+	private static final String AFFIRMA	 	  = "yes or no";
+	private static final String UNDERYEARS 	  = "Under 10 years old";
 	private static final String YEAR	 	  = "YEAR: (yyyy)";
 	private static final String MONTH	      = "MONTH: (mm)";
 	private static final String DAY			  = "DAY: (dd)";
-	private static final String DATEBIRTH	  = "DateBith: ";
-	private static final String ERRORDATE	  = "Error Date: ";
 	private static final String ERRORDATE2	  = "The date can't be later than the current date";
-	private static final String TENYEAROLD	  = "you are under 10 years old: ";
 	private static final String YES	 	  	  = "yes";
 	
 	private static Scanner scanIn = new Scanner(System.in);
@@ -66,10 +59,11 @@ public class Main {
 				break;
 					
 				case 2: // LOG IN
-					if(logInPlayer() != null) {
+					Player player = logInPlayer();
+					if(player != null) {
 						System.out.println(STARTGAME);
 						affirmation  = screen(AFFIRMA);
-						if(affirmation.compareTo(YES) == 0) {
+						if(affirmation.compareTo(YES) == 0 && checkAge(player)) {
 							LuckyRouletteGame game = new LuckyRouletteGame();
 							game.startGame();						
 						}
@@ -78,11 +72,6 @@ public class Main {
 					
 				case 3: // EXIT 
 					System.exit(0);
-				break;
-				
-				case 4: // EXIT 
-					DataBase.showPlayer(listPlayer);
-					checkAge();
 				break;
 					
 				default:
@@ -100,7 +89,11 @@ public class Main {
 		System.out.println(str);
 		return(scanIn.nextLine());
 	}
-
+	
+	/* Method to register a new player.
+	 * Request the data and validate it.
+	 * Then add the data to an array in another class
+	 * */
 	private static void signInPlayer() { // COLLECT THE VALUE
 	
 		String strAlias, strPassword, strName, strBirth;
@@ -119,6 +112,7 @@ public class Main {
 		 
 	}
 	
+	/* Validate that the alias is not empty */
 	private static String validateAlias() {
 		
 		String strAlias;
@@ -132,7 +126,7 @@ public class Main {
 		
 		return strAlias ;
 	}
-	
+	/* Validate that the password has more than 5 characters */
 	private static String validatePassword() {
 		
 		String strPassword;
@@ -147,6 +141,12 @@ public class Main {
 		return strPassword ;
 	}
 	
+	/* Validate that the year is between 1900 and 2022
+	 * Validate that the month is between 1 and 12
+	 * Validate that the day is between 1 and 31
+	 * 
+	 * And check that the date entered is not greater than the current one
+	 * */
 	public static String validateBirthDate(){
 		
 		Calendar calendar = Calendar.getInstance();
@@ -164,6 +164,7 @@ public class Main {
 		boolean b = true;
 		
 		do {
+		
 			do { // YEAR 
 				try { 
 					year  = Integer.parseInt(screen(YEAR));
@@ -221,6 +222,9 @@ public class Main {
 		
 	}
 	
+	/* Take the data that is entered on the screen and ask the class if it has this player 
+	 * The player returns
+	 * */
 	private static Player logInPlayer() { 
 		
 		String strAlias, strPassword;
@@ -236,47 +240,38 @@ public class Main {
 	
 	private static Calendar currentDate(){
 		
-		Calendar calendar = Calendar.getInstance();
-		
-		/*int day	  = calendar.get(Calendar.DATE);
-		int month = calendar.get(Calendar.MONTH);
-		int year  = calendar.get(Calendar.YEAR);
-		System.out.println(month);
-		calendar.set(year, month, day);*/
-		
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/mm/dd");
-		Date newDate1 = calendar.getTime();	
-		String strCalendar1 = sdf.format(newDate1);
-		System.out.println(strCalendar1);
-		
-
-		
+		Calendar calendar = Calendar.getInstance();	
 		return calendar;
 		
 	}
 	
-	private static String checkAge() {
+	/* Check that it is older than 10 years */
+	public static boolean checkAge(Player player) {
 		
-		Calendar current = currentDate();
+		Calendar current = Calendar.getInstance();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+		Date dateAge, dateBirth;	
+		String strDateBirth;
 		
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/mm/dd");
-		Date newDate, newDate1;	
-		String strCalendar, strCalendar1;
+		current.add(Calendar.YEAR, -10); // to the current date we remove 10 years
 		
-		newDate1 = current.getTime();	
-		strCalendar1 = sdf.format(newDate1);
-		System.out.println(strCalendar1);
+		dateAge = current.getTime(); // Convert it to type Date
 		
-		current.add(Calendar.YEAR, -10);
+		strDateBirth = player.getBirthDate(); // Take the birthday of the player
 		
-		newDate = current.getTime();	
-		strCalendar = sdf.format(newDate);
-		System.out.println(strCalendar);		
+		try {
+			dateBirth = sdf.parse(strDateBirth); // Convert it to type Date (It was String)
+			if(dateBirth.after(dateAge)) {  // if the birthday is after the calculated date
+				System.out.println(UNDERYEARS); // You can not play
+				return false;
+			}
+		} catch (ParseException e) {			
+			e.printStackTrace();
+		}
 		
-		return strCalendar;
+		return true;
 		
 	}
-	
 }
 	
 	

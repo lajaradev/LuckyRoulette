@@ -4,7 +4,7 @@ import java.util.ArrayList;
 public class Character {
 	
 	
-	
+	/* This method changes all the letters of the alphabet to "_" */
 	public static String emptySentence (String randomSentence) {
 		
 		String emptyRandomSentence = randomSentence
@@ -19,6 +19,11 @@ public class Character {
 				
 	}
 	
+	/* Store the first character of the entered letter.
+	 * Convert the String phrase to an array of characters.
+	 * Go through the entire array looking for characters equal to the one entered and add them to an array list.
+	 * We return that array list.
+	 * */
 	public static ArrayList<Integer> index (String letter, String randomSentence) {
 		
 		// GET INDEXS OF MY LETTER
@@ -34,6 +39,10 @@ public class Character {
 		return arl;
 	}
 	
+	/* Traverse the array where we store the phrase.
+	 * Go through the array of equal characters, obtained in the index method.
+	 * Place the characters in the correct position and we concatenate the rest of the sentence
+	 * */
 	public static String newletter (String letter, String randomSentence, String emptyRandomSentence, String newletterinSentence) {
 		
 		ArrayList<Integer> arl = new ArrayList<Integer>();
@@ -53,6 +62,7 @@ public class Character {
 				
 	}
 	
+	/* Compare the letter with the vowels */
 	public static String isVowel(String letter) {
 		
 		if( letter.equals("a") || letter.equals("e") || letter.equals("i") || 
@@ -65,6 +75,7 @@ public class Character {
 		
 	}
 	
+	/* Compare the letter with the consonants */
 	public static String isConsonant(String letter) {
 		
 		if( letter.equals("b") || letter.equals("c") || letter.equals("d") || 
@@ -82,6 +93,9 @@ public class Character {
 			
 	}
 	
+	/*
+	 * This method is used to count the letters and return a value that we will use later to obtain a total score.
+	 * */
 	public static int countLetter (String letter, String randomSentence) {
 		
 		// GET INDEXS OF MY LETTER

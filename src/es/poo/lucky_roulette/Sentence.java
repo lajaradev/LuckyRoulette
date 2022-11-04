@@ -17,7 +17,7 @@ public class Sentence {
 	private static final String sentence8  = "dream as if you'll live forever, live as if you'll die today";
 	private static final String sentence9  = "if you have everything under control, you're not moving fast enough";
 	
-	
+	/* This method returns a random phrase according to the level of the game */
 	public static String giveMeSentence(String LEVEL) {
 		
 		String randomSentence = null;

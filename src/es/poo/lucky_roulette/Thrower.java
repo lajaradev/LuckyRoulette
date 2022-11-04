@@ -1,7 +1,8 @@
 package es.poo.lucky_roulette;
 
 public class Thrower {
-		
+	
+	/* This method returns a random score */
 	public static int throwScore() {
 		
 		int score = 0;

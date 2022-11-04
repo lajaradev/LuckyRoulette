@@ -12,13 +12,18 @@ public class DataBase {
 	private static final String SEPARATOR     = "-------------------------------\n";
 	private static final String ALIASEXISTS   = "This alias already exists";
 	private static final String PLAYEREXISTS  = "There is no player with this combination\n";
+	private static final String GUEST		  = "guest";
+	private static final String GUESTDATE	  = "1996/12/13";
 		
 	private static ArrayList <Player> listPlayer = new ArrayList <Player>();
 	
-	public static void setGuest() { // GET THE VALUE OF THE ALIAS
+	
+	/* Create the guest player */
+	private static void setGuest() { 
 		Player guest = new Player();
-		guest.setAlias("guest");
-		guest.setPassword("guest");
+		guest.setAlias(GUEST);
+		guest.setPassword(GUEST);
+		guest.setBirthDate(GUESTDATE);
 		listPlayer.add(guest);
 	}
 	
@@ -78,8 +83,6 @@ public class DataBase {
 			System.out.println(SEPARATOR);
 		}
 	}
-	
 
-	
 
 }

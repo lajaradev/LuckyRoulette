@@ -1,5 +1,4 @@
 package es.poo.lucky_roulette;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class LuckyRouletteGame {
@@ -17,9 +16,6 @@ public class LuckyRouletteGame {
 	private static final String LOSER  			= "Sorry, you lost";
 	private static final String SCORE  			= "Roll Score: ";
 	private static final String ROUNDSCORE  	= "TOTAL SCORE: ";
-	private static final String INITIALSCORE  	= "Initial Score: ";
-	private static final String LOWSCORE  		= "You don't have enough score (min 30) -> Your score is: ";
-	private static final String CHECKNUMBER  	= "You haven't entered a number. Try again: ";
 	private static final String ROUND         	= "Rounds: ";
 	private static final String LEVEL         	= "Level: (rookie / medium / expert)";
 	private static final String BUYVOWEL        = "Do you want to buy a vowel?";
@@ -36,6 +32,7 @@ public class LuckyRouletteGame {
 		
 	}
 	
+	/* get the number of round and the level */
 	public static Round roundData() { // COLLECT THE VALUE
 		
 		int intRound = Integer.parseInt(screen(ROUND));
@@ -49,6 +46,7 @@ public class LuckyRouletteGame {
 		return round; // RETURN OBJECT round
 	}
 
+	/* START THE GAME !*/
 	public void startGame(){
 		
 		Round round = roundData(); // TAKE MY OBJECT round
@@ -61,12 +59,16 @@ public class LuckyRouletteGame {
 		String buyVowel;
 		
 		int score = 0;
-		int option = 0;
 		int attempt = 1;
 		int scoreAttempt = 0;
 		int scoreRound = 0;
 		int numLetters = 0;
 		
+		boolean solve = false;
+		
+		/* Loop for all rounds 
+		 * In each round it gives us a random phrase, and encrypt it
+		 * */
 		for(int i = 1; i < round.getRoundNumber() + 1; i ++) {
 			
 			randomSentence = Sentence.giveMeSentence(round.getLevel());
@@ -78,10 +80,12 @@ public class LuckyRouletteGame {
 			System.out.println(emptyRandomSentence);
 			System.out.println(SPACE);
 			
-			while(attempt < round.numberAttemps() + 1) {
+			/* In this loop we process the number of attempts that the player has according to the level entered */
+			while(attempt < round.numberAttemps() + 1 && solve == false) {
 				
-					score = Thrower.throwScore(); // 1. Throw
+					score = Thrower.throwScore(); 
 					
+					/* Start by introducing a consonant */
 					do {						
 						System.out.println(ATTEMPT + attempt);
 						System.out.println(SCORE + score);
@@ -92,6 +96,7 @@ public class LuckyRouletteGame {
 						
 					} while(validatedLetter == null);		
 					
+					/* Check if the sentence has the consonant entered to assign it to the encrypted phrase and give the player the points */
 					if(randomSentence.contains(letter)) {		
 						
 						newletterinSentence = Character.newletter(letter, randomSentence, emptyRandomSentence, newletterinSentence);
@@ -114,10 +119,10 @@ public class LuckyRouletteGame {
 						System.out.println(NOTIS);
 					}
 					
+					/* Add an attempt to the round */
 					attempt ++;
 					
-					// 2. Buy vowel
-							
+					/* If player has enough points, we offer the player to buy a vowel */
 					if(scoreRound > 30) {
 						System.out.println(BUYVOWEL);
 						buyVowel = screen(AFFIRMA);
@@ -129,6 +134,7 @@ public class LuckyRouletteGame {
 								
 							} while(validatedLetter == null);
 							
+							/* If the vowel is present, we add it to the encrypted sentence */
 							if(randomSentence.contains(letter)) {						
 								newletterinSentence = Character.newletter(letter, randomSentence, emptyRandomSentence, newletterinSentence);
 								System.out.println(newletterinSentence);
@@ -141,13 +147,12 @@ public class LuckyRouletteGame {
 						}
 					}
 					
+					/* Ask if you want to solve the sentence */
 					System.out.println(SOLVE);
 					buyVowel = screen(AFFIRMA);
 					if(buyVowel.compareTo(YES) == 0) {
 						winnerORloser(randomSentence);
-						break; // exit if
-						//return; //exit for
-						//TODO INIT NEW ROUND (exit while)
+						solve = true;
 					}		
 				}
 			
@@ -156,6 +161,7 @@ public class LuckyRouletteGame {
 			
 	}
 	
+	/* Method to check if the sentence is correct */
 	public void winnerORloser(String randomSentence) {
 		
 		String validateSentence;
